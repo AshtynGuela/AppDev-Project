@@ -8,10 +8,24 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Validate required environment variables
+if (!process.env.MONGODB_URI) {
+  console.error('MONGODB_URI is not defined in environment variables');
+  process.exit(1);
+}
+
+if (!process.env.SESSION_SECRET) {
+  console.error('SESSION_SECRET is not defined in environment variables');
+  process.exit(1);
+}
+
 // Database connection
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('MongoDB connected successfully'))
-.catch(err => console.error('MongoDB connection error:', err));
+.catch(err => {
+  console.error('MongoDB connection error:', err);
+  process.exit(1);
+});
 
 // Middleware
 app.use(express.json());
@@ -25,10 +39,16 @@ app.use(session({
   saveUninitialized: false,
   store: MongoStore.create({
     mongoUrl: process.env.MONGODB_URI,
-    touchAfter: 24 * 3600 // lazy session update (in seconds)
+    touchAfter: 24 * 3600,
+    mongoOptions: {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }
   }),
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24 // 1 day
+    maxAge: 1000 * 60 * 60 * 24, // 1 day
+    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+    httpOnly: true
   }
 }));
 
@@ -89,7 +109,7 @@ app.get('/dashboard', async (req, res) => {
       .sort({ date: -1 })
       .limit(10);
     
-    // Check if user is admin (adminX format) - case insensitive
+    // Check if user is admin (adminX format, case insensitive)
     const isAdmin = /^admin\d+$/i.test(user.username);
     
     res.render('dashboard', { 
