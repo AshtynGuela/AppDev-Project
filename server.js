@@ -45,16 +45,13 @@ app.use(session({
   saveUninitialized: false,
   store: MongoStore.create({
     mongoUrl: process.env.MONGODB_URI,
-    touchAfter: 24 * 3600,
-    mongoOptions: {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    }
+    touchAfter: 24 * 3600
   }),
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, // 1 day
-    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-    httpOnly: true
+    httpOnly: true,
+    secure: false, // Set to false to work on Render
+    sameSite: 'lax'
   }
 }));
 
