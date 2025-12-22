@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - miniLibrary</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📚 miniLibrary Dashboard</h1>
+      <div class="user-info">
+        <span>Welcome, <strong><%= user.username %></strong></span>
+        <% if (isAdmin) { %>
+          <span class="admin-badge">ADMIN</span>
+        <% } %>
+        <form action="/auth/logout" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-secondary">Logout</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="/dashboard">Dashboard</a>
+      <a href="/transactions/history">Full History</a>
+    </div>
+
+    <!-- Add Book Form (Admin Only) -->
+    <% if (isAdmin) { %>
+    <div class="add-book-form">
+      <h2>➕ Add New Book</h2>
+      <form action="/books/add" method="POST">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="title">Title *</label>
+            <input type="text" id="title" name="title" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="author">Author *</label>
+            <input type="text" id="author" name="author" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="isbn">ISBN (optional)</label>
+            <input type="text" id="isbn" name="isbn">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="description">Description (optional)</label>
+          <textarea id="description" name="description" rows="3" placeholder="Brief description of the book..."></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-success">➕ Add Book</button>
+      </form>
+    </div>
+    <% } else { %>
+    <!-- Non-Admin Info -->
+    <div class="info-message">
+      <div class="info-icon">ℹ️</div>
+      <div>
+        <strong>Browse & Borrow Books</strong>
+        <p>Only administrators (admin1, admin2, etc.) can add books. You can browse the catalog and check out books below.</p>
+      </div>
+    </div>
+    <% } %>
+
+    <!-- Books Catalog -->
+    <h2>Book Catalog</h2>
+    <div class="books-grid">
+      <% books.forEach(book => { %>
+        <div class="book-card">
+          <div class="book-title"><%= book.title %></div>
+          <div class="book-author">by <%= book.author %></div>
+          <% if (book.description) { %>
+            <div class="book-description"><%= book.description %></div>
+          <% } %>
+          <% if (book.isbn) { %>
+            <div style="font-size: 12px; color: #a0aec0;">ISBN: <%= book.isbn %></div>
+          <% } %>
+          
+          <div class="book-status <%= book.status === 'available' ? 'status-available' : 'status-checked-out' %>">
+            <%= book.status === 'available' ? '✓ Available' : '✗ Checked Out' %>
+          </div>
+          
+          <div class="book-actions">
+            <% if (book.status === 'available') { %>
+              <form action="/books/checkout/<%= book._id %>" method="POST">
+                <button type="submit" class="btn btn-primary btn-full">Check Out</button>
+              </form>
+            <% } else { %>
+              <form action="/books/checkin/<%= book._id %>" method="POST">
+                <button type="submit" class="btn btn-success btn-full">Return</button>
+              </form>
+            <% } %>
+            
+            <form action="/books/delete/<%= book._id %>" method="POST" onsubmit="return confirm('Delete this book?')">
+              <button type="submit" class="btn btn-danger btn-full">Delete</button>
+            </form>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+
+    <!-- Recent Transactions -->
+    <h2 style="margin-top: 40px;">Recent Transactions</h2>
+    <table class="transactions-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Book</th>
+          <th>User</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% recentTransactions.forEach(transaction => { %>
+          <tr>
+            <td><%= new Date(transaction.date).toLocaleString() %></td>
+            <td><%= transaction.book ? transaction.book.title : 'Unknown' %></td>
+            <td><%= transaction.user ? transaction.user.username : 'Unknown' %></td>
+            <td>
+              <span class="badge <%= transaction.type === 'check-out' ? 'badge-checkout' : 'badge-checkin' %>">
+                <%= transaction.type %>
+              </span>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
