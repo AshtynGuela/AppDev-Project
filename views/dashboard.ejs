@@ -96,9 +96,11 @@
               </form>
             <% } %>
             
+            <% if (isAdmin) { %>
             <form action="/books/delete/<%= book._id %>" method="POST" onsubmit="return confirm('Delete this book?')">
               <button type="submit" class="btn btn-danger btn-full">Delete</button>
             </form>
+            <% } %>
           </div>
         </div>
       <% }); %>
