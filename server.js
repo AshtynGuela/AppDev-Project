@@ -105,7 +105,10 @@ app.get('/dashboard', async (req, res) => {
   
   try {
     const user = await User.findById(req.session.userId);
-    const books = await Book.find().sort({ title: 1 });
+    const books = await Book.find()
+      .populate('currentBorrower')
+      .populate('reservedBy')
+      .sort({ title: 1 });
     const recentTransactions = await Transaction.find()
       .populate('book')
       .populate('user')

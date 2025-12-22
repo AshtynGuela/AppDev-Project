@@ -62,6 +62,8 @@ router.post('/checkout/:id', isAuthenticated, async (req, res) => {
     // Update book status
     book.status = 'checked-out';
     book.currentBorrower = req.session.userId;
+    book.checkedOutDate = new Date();
+    book.reservedBy = null; // Clear reservation when checked out
     await book.save();
 
     // Create transaction record
@@ -96,6 +98,8 @@ router.post('/checkin/:id', isAuthenticated, async (req, res) => {
     // Update book status
     book.status = 'available';
     book.currentBorrower = null;
+    book.checkedOutDate = null;
+    // Keep reservedBy intact so the person who reserved can check it out
     await book.save();
 
     // Create transaction record
@@ -111,6 +115,64 @@ router.post('/checkin/:id', isAuthenticated, async (req, res) => {
   } catch (error) {
     console.error('Check-in error:', error);
     res.status(500).send('Error checking in book');
+  }
+});
+
+// Reserve a book
+router.post('/reserve/:id', isAuthenticated, async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+
+    if (!book) {
+      return res.status(404).send('Book not found');
+    }
+
+    if (book.status === 'available') {
+      return res.status(400).send('Book is available, you can check it out directly');
+    }
+
+    // Check if already reserved by this user
+    if (book.reservedBy && book.reservedBy.toString() === req.session.userId) {
+      return res.status(400).send('You have already reserved this book');
+    }
+
+    // Set reservation
+    book.reservedBy = req.session.userId;
+    await book.save();
+
+    res.redirect('/dashboard');
+  } catch (error) {
+    console.error('Reserve book error:', error);
+    res.status(500).send('Error reserving book');
+  }
+});
+
+// Cancel reservation
+router.post('/cancel-reserve/:id', isAuthenticated, async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+
+    if (!book) {
+      return res.status(404).send('Book not found');
+    }
+
+    // Only the user who reserved can cancel, or an admin
+    const User = require('../models/User');
+    const user = await User.findById(req.session.userId);
+    const isAdmin = /^admin\d+$/i.test(user.username);
+    
+    if (book.reservedBy && book.reservedBy.toString() !== req.session.userId && !isAdmin) {
+      return res.status(403).send('You cannot cancel someone else\'s reservation');
+    }
+
+    // Clear reservation
+    book.reservedBy = null;
+    await book.save();
+
+    res.redirect('/dashboard');
+  } catch (error) {
+    console.error('Cancel reservation error:', error);
+    res.status(500).send('Error canceling reservation');
   }
 });
 

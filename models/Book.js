@@ -32,6 +32,15 @@ const bookSchema = new mongoose.Schema({
     ref: 'User',
     default: null
   },
+  checkedOutDate: {
+    type: Date,
+    default: null
+  },
+  reservedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: null
+  },
   addedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
