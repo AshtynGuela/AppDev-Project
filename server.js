@@ -10,14 +10,20 @@ const PORT = process.env.PORT || 3000;
 
 // Validate required environment variables
 if (!process.env.MONGODB_URI) {
-  console.error('MONGODB_URI is not defined in environment variables');
+  console.error('ERROR: MONGODB_URI is not defined in environment variables');
+  console.error('Please set MONGODB_URI in your Render environment variables');
   process.exit(1);
 }
 
 if (!process.env.SESSION_SECRET) {
-  console.error('SESSION_SECRET is not defined in environment variables');
+  console.error('ERROR: SESSION_SECRET is not defined in environment variables');
+  console.error('Please set SESSION_SECRET in your Render environment variables');
   process.exit(1);
 }
+
+console.log('Environment variables loaded successfully');
+console.log('MongoDB URI:', process.env.MONGODB_URI ? 'Set ✓' : 'Not set ✗');
+console.log('Session Secret:', process.env.SESSION_SECRET ? 'Set ✓' : 'Not set ✗');
 
 // Database connection
 mongoose.connect(process.env.MONGODB_URI)
