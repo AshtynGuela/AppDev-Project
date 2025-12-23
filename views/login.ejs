@@ -1,37 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - miniLibrary</title>
-  <link rel="stylesheet" href="/styles.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign In - miniLibrary</title>
+    
+    <!-- Template CSS Files -->
+    <link rel="stylesheet" type="text/css" href="/template-style.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            --bg-color: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
+            --card-bg: #fff;
+            --text-color: #333;
+            --input-bg: #fff;
+            --input-border: #e0e0e0;
+            --input-focus: #ff6b6b;
+            --label-color: #333;
+        }
+        
+        body.dark-mode {
+            --bg-color: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            --card-bg: #2d2d2d;
+            --text-color: #e0e0e0;
+            --input-bg: #3d3d3d;
+            --input-border: #4d4d4d;
+            --input-focus: #fbbf24;
+            --label-color: #e0e0e0;
+        }
+        
+        body {
+            background: var(--bg-color);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+        .signin-wrapper {
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 50px;
+            max-width: 500px;
+            width: 100%;
+            margin: 20px;
+            transition: background 0.3s ease;
+        }
+        .signin-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .signin-header h1 {
+            color: #ff6b6b;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        .signin-header p {
+            color: var(--text-color);
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--label-color);
+            font-weight: 500;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-color);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+        .btn-signin {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .btn-signin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
+        }
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #c33;
+        }
+        .signin-footer {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .signin-footer a {
+            color: #ff6b6b;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .signin-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 2px solid var(--input-border);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        .dark-mode-toggle:hover {
+            transform: scale(1.05);
+        }
+        .dark-mode-toggle i {
+            font-size: 18px;
+            color: var(--primary-color);
+        }
+    </style>
 </head>
 <body>
-  <div class="auth-container">
-    <h1 class="text-center">📚 miniLibrary</h1>
-    <h2 class="text-center">Login</h2>
+    <!-- Dark Mode Toggle -->
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">
+        <i class="fa fa-moon-o" id="theme-icon"></i>
+        <span id="theme-text">Dark</span>
+    </button>
     
-    <% if (error) { %>
-      <div class="error"><%= error %></div>
-    <% } %>
+    <div class="signin-wrapper">
+        <div class="signin-header">
+            <h1>📚 miniLibrary</h1>
+            <p>Welcome back! Please sign in to your account</p>
+        </div>
+        
+        <% if (error) { %>
+            <div class="error-message">
+                <i class="fa fa-exclamation-circle"></i> <%= error %>
+            </div>
+        <% } %>
+        
+        <form action="/auth/login" method="POST">
+            <div class="form-group">
+                <label for="username">
+                    <i class="fa fa-user"></i> Username
+                </label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">
+                    <i class="fa fa-lock"></i> Password
+                </label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            
+            <button type="submit" class="btn-signin">
+                <i class="fa fa-sign-in"></i> Sign In
+            </button>
+        </form>
+        
+        <div class="signin-footer">
+            <p>Don't have an account? <a href="/register">Register here</a></p>
+        </div>
+    </div>
+
+    <!-- Template JS Files -->
+    <script src="/js/jquery-1.12.4.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     
-    <form action="/auth/login" method="POST">
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
-      </div>
-      
-      <button type="submit" class="btn btn-primary btn-full">Login</button>
-    </form>
-    
-    <p class="text-center mt-3">
-      Don't have an account? <a href="/register">Register here</a>
-    </p>
-  </div>
+    <script>
+        // Dark Mode Toggle Function
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            updateThemeIcon(isDark);
+        }
+        
+        function updateThemeIcon(isDark) {
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            if (isDark) {
+                icon.className = 'fa fa-sun-o';
+                text.textContent = 'Light';
+            } else {
+                icon.className = 'fa fa-moon-o';
+                text.textContent = 'Dark';
+            }
+        }
+        
+        // Load saved theme preference
+        document.addEventListener('DOMContentLoaded', function() {
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+            }
+            updateThemeIcon(darkMode);
+        });
+    </script>
 </body>
 </html>
