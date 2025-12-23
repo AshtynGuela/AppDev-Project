@@ -409,8 +409,12 @@
             align-items: stretch;
         }
         .book-actions form {
-            flex: 1 1 calc(50% - 4px);
+            flex: 1 1 100%;
             min-width: 120px;
+        }
+        /* When admin buttons exist, checkout/return buttons take half width */
+        .book-actions:has(.btn-warning, .btn-danger) form:not(:has(.btn-warning)):not(:has(.btn-danger)) {
+            flex: 1 1 calc(50% - 4px);
         }
         .book-actions form button {
             width: 100%;
