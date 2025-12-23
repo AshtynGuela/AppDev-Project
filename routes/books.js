@@ -176,6 +176,25 @@ router.post('/cancel-reserve/:id', isAuthenticated, async (req, res) => {
   }
 });
 
+// Edit a book (admin only)
+router.post('/edit/:id', isAuthenticated, isAdmin, async (req, res) => {
+  try {
+    const { title, author, description, isbn } = req.body;
+    
+    await Book.findByIdAndUpdate(req.params.id, {
+      title,
+      author,
+      description: description || '',
+      isbn: isbn || undefined
+    });
+    
+    res.redirect('/dashboard');
+  } catch (error) {
+    console.error('Edit book error:', error);
+    res.status(500).send('Error editing book');
+  }
+});
+
 // Delete a book (admin only)
 router.post('/delete/:id', isAuthenticated, isAdmin, async (req, res) => {
   try {

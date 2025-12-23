@@ -7,7 +7,7 @@
     <title>Dashboard - miniLibrary</title>
     
     <!-- Template CSS Files -->
-    <link rel="stylesheet" type="text/css" href="/template-style.css">
+    <link rel="stylesheet" type="text/css" href="/optimized-style.css">
     <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
     
     <!-- Favicon -->
@@ -20,8 +20,8 @@
             --text-color: #333;
             --text-secondary: #666;
             --border-color: #e0e0e0;
-            --header-gradient: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-            --primary-color: #ff6b6b;
+            --header-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-color: #667eea;
             --input-bg: #fff;
             --input-border: #e0e0e0;
             --table-hover: #f8f9fa;
@@ -190,7 +190,7 @@
         }
         .btn-add-book:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
         
         /* Info Message */
@@ -206,6 +206,109 @@
         }
         .info-icon {
             font-size: 24px;
+        }
+        
+        /* Search and Filter Section */
+        .search-filter-section {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        .search-filter-container {
+            margin-top: 20px;
+        }
+        .search-bar {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .search-bar i.fa-search {
+            position: absolute;
+            left: 15px;
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 14px 50px 14px 45px;
+            border: 2px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-color);
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        body.dark-mode .search-bar input:focus {
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+        }
+        .btn-clear-search {
+            position: absolute;
+            right: 10px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        .btn-clear-search:hover {
+            background: var(--input-border);
+            color: var(--text-color);
+        }
+        .filter-options {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .filter-label {
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-options select {
+            padding: 10px 15px;
+            border: 2px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-color);
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .filter-options select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        .search-results {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            display: none;
+        }
+        body.dark-mode .search-results {
+            background: rgba(251, 191, 36, 0.05);
+        }
+        .book-count {
+            font-size: 18px;
+            color: var(--text-secondary);
+            font-weight: 400;
         }
         
         /* Books Grid */
@@ -227,6 +330,10 @@
             padding: 25px;
             box-shadow: 0 2px 15px rgba(0,0,0,0.08);
             transition: all 0.3s;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 400px;
         }
         .book-card:hover {
             transform: translateY(-5px);
@@ -249,6 +356,30 @@
             font-size: 14px;
             line-height: 1.6;
             margin-bottom: 12px;
+            position: relative;
+        }
+        .book-description.truncated {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .see-more-btn {
+            color: var(--primary-color);
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: opacity 0.3s;
+        }
+        .see-more-btn:hover {
+            opacity: 0.7;
         }
         .book-status {
             display: inline-block;
@@ -266,21 +397,60 @@
             background: #f8d7da;
             color: #721c24;
         }
+        .book-meta-info {
+            min-height: 60px;
+            margin-bottom: 12px;
+        }
         .book-actions {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 15px;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: auto;
+            align-items: stretch;
+        }
+        .book-actions form {
+            flex: 1 1 calc(50% - 4px);
+            min-width: 120px;
+        }
+        .book-actions form button {
+            width: 100%;
+        }
+        .book-actions button:not(.btn-icon-only) {
+            flex: 0 0 auto;
+            min-width: 80px;
+            max-width: max-content;
+        }
+        .book-actions .btn-icon-only {
+            flex: 0 0 auto;
+            min-width: 44px;
+            padding: 10px 12px;
+            width: auto;
+        }
+        /* Keep edit and delete on same row */
+        .book-actions form:has(.btn-icon-only) {
+            flex: 0 0 auto;
+            min-width: auto;
         }
         .btn {
-            padding: 10px 20px;
+            padding: 10px 16px;
             border: none;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+        .btn-warning:hover {
+            background: #e0a800;
+            transform: translateY(-2px);
         }
         .btn-primary {
             background: var(--header-gradient);
@@ -288,7 +458,7 @@
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
         .btn-success {
             background: #28a745;
@@ -386,6 +556,72 @@
             font-size: 20px;
             color: var(--primary-color);
         }
+        
+        /* Edit Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            animation: fadeIn 0.3s;
+        }
+        .modal.show {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s;
+            position: relative;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal-header h2 {
+            color: var(--text-color);
+            font-size: 24px;
+            margin: 0;
+        }
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+        .close-modal:hover {
+            color: #f00;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -394,12 +630,44 @@
         <i class="fa fa-moon-o" id="theme-icon"></i>
         <span id="theme-text">Dark Mode</span>
     </button>
+
+    <!-- Edit Book Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fa fa-edit"></i> Edit Book</h2>
+                <button class="close-modal" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form id="editBookForm" method="POST">
+                <div class="form-group">
+                    <label for="edit-title">Title *</label>
+                    <input type="text" id="edit-title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-author">Author *</label>
+                    <input type="text" id="edit-author" name="author" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-isbn">ISBN</label>
+                    <input type="text" id="edit-isbn" name="isbn">
+                </div>
+                <div class="form-group">
+                    <label for="edit-description">Description</label>
+                    <textarea id="edit-description" name="description" rows="4" style="width: 100%; padding: 12px 15px; border: 2px solid var(--input-border); background: var(--input-bg); color: var(--text-color); border-radius: 8px; font-size: 15px; font-family: inherit; resize: vertical;"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()" style="flex: 1;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
     
     <!-- Header -->
     <div class="main-header">
         <div class="header-content">
             <div class="logo-section">
-                <h1><i class="fa fa-book"></i> miniLibrary</h1>
+                <h1><i class="fa fa-book"></i> Library Management System</h1>
             </div>
             <div class="user-section">
                 <div class="user-info">
@@ -475,18 +743,58 @@
         </div>
         <% } %>
 
+        <!-- Search and Filter Section -->
+        <div class="search-filter-section">
+            <h2 class="section-title"><i class="fa fa-search"></i> Search & Filter Books</h2>
+            <div class="search-filter-container">
+                <div class="search-bar">
+                    <i class="fa fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search by title, author, ISBN, or description..." onkeyup="filterBooks()">
+                    <button class="btn-clear-search" onclick="clearSearch()" title="Clear search">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <div class="filter-options">
+                    <label class="filter-label">
+                        <i class="fa fa-filter"></i> Filter by Status:
+                    </label>
+                    <select id="statusFilter" onchange="filterBooks()">
+                        <option value="all">All Books</option>
+                        <option value="available">Available Only</option>
+                        <option value="checked-out">Checked Out Only</option>
+                    </select>
+                    <label class="filter-label" style="margin-left: 20px;">
+                        <i class="fa fa-sort"></i> Sort by:
+                    </label>
+                    <select id="sortFilter" onchange="filterBooks()">
+                        <option value="default">Default Order</option>
+                        <option value="title-asc">Title (A-Z)</option>
+                        <option value="title-desc">Title (Z-A)</option>
+                        <option value="author-asc">Author (A-Z)</option>
+                        <option value="author-desc">Author (Z-A)</option>
+                    </select>
+                </div>
+            </div>
+            <div id="searchResults" class="search-results"></div>
+        </div>
+
         <!-- Books Catalog -->
-        <h2 class="section-title"><i class="fa fa-book"></i> Book Catalog</h2>
+        <h2 class="section-title"><i class="fa fa-book"></i> Book Catalog <span id="bookCount" class="book-count"></span></h2>
         <div class="books-grid">
             <% books.forEach(book => { %>
                 <div class="book-card">
                     <div class="book-title"><%= book.title %></div>
                     <div class="book-author">by <%= book.author %></div>
                     <% if (book.description) { %>
-                        <div class="book-description"><%= book.description %></div>
+                        <div class="book-description truncated" data-full-text="<%= book.description.replace(/"/g, '&quot;') %>">
+                            <%= book.description %>
+                        </div>
+                        <button class="see-more-btn" onclick="toggleDescription(this)" style="display: none;">
+                            <span class="see-more-text">See more</span> <i class="fa fa-chevron-down"></i>
+                        </button>
                     <% } %>
                     <% if (book.isbn) { %>
-                        <div style="font-size: 12px; color: #999;">ISBN: <%= book.isbn %></div>
+                        <div class="book-isbn" style="font-size: 12px; color: #999;">ISBN: <%= book.isbn %></div>
                     <% } %>
                     
                     <div class="book-status <%= book.status === 'available' ? 'status-available' : 'status-checked-out' %>">
@@ -494,25 +802,28 @@
                         <%= book.status === 'available' ? 'Available' : 'Checked Out' %>
                     </div>
                     
-                    <% if (book.status === 'checked-out' && book.checkedOutDate) { %>
-                        <div style="font-size: 12px; color: #999; margin-top: 8px;">
-                            <i class="fa fa-calendar"></i> Checked out: <%= new Date(book.checkedOutDate).toLocaleDateString() %>
-                        </div>
-                    <% } %>
-                    
-                    <% if (book.status === 'checked-out' && book.currentBorrower) { %>
-                        <div style="font-size: 12px; color: #999; margin-top: 4px;">
-                            <i class="fa fa-user"></i> Borrower: <%= book.currentBorrower.username %>
-                        </div>
-                    <% } %>
-                    
-                    <% if (book.reservedBy) { %>
-                        <div style="font-size: 12px; color: #f6ad55; margin-top: 8px; font-weight: 500;">
-                            <i class="fa fa-bookmark"></i> Reserved by: <%= book.reservedBy.username %>
-                        </div>
-                    <% } %>
+                    <div class="book-meta-info">
+                        <% if (book.status === 'checked-out' && book.checkedOutDate) { %>
+                            <div style="font-size: 12px; color: #999; margin-top: 8px;">
+                                <i class="fa fa-calendar"></i> Checked out: <%= new Date(book.checkedOutDate).toLocaleDateString() %>
+                            </div>
+                        <% } %>
+                        
+                        <% if (book.status === 'checked-out' && book.currentBorrower) { %>
+                            <div style="font-size: 12px; color: #999; margin-top: 4px;">
+                                <i class="fa fa-user"></i> Borrower: <%= book.currentBorrower.username %>
+                            </div>
+                        <% } %>
+                        
+                        <% if (book.reservedBy) { %>
+                            <div style="font-size: 12px; color: #f6ad55; margin-top: 8px; font-weight: 500;">
+                                <i class="fa fa-bookmark"></i> Reserved by: <%= book.reservedBy.username %>
+                            </div>
+                        <% } %>
+                    </div>
                     
                     <div class="book-actions">
+                        <!-- Checkout/Return/Reserve buttons (for all users including admin) -->
                         <% if (book.status === 'available') { %>
                             <form action="/books/checkout/<%= book._id %>" method="POST">
                                 <button type="submit" class="btn btn-primary">
@@ -548,11 +859,20 @@
                         <% } %>
                         
                         <% if (isAdmin) { %>
-                        <form action="/books/delete/<%= book._id %>" method="POST" onsubmit="return confirm('Delete this book?')">
-                            <button type="submit" class="btn btn-danger">
-                                <i class="fa fa-trash"></i> Delete
+                            <!-- Admin: Edit and Delete buttons -->
+                            <button type="button" class="btn btn-warning" onclick="openEditModal(this)" 
+                                data-id="<%= book._id %>" 
+                                data-title="<%= book.title %>" 
+                                data-author="<%= book.author %>" 
+                                data-description="<%= book.description || '' %>" 
+                                data-isbn="<%= book.isbn || '' %>">
+                                <i class="fa fa-edit"></i> Edit
                             </button>
-                        </form>
+                            <form action="/books/delete/<%= book._id %>" method="POST" onsubmit="return confirm('Delete this book?')">
+                                <button type="submit" class="btn btn-danger btn-icon-only" title="Delete">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
                         <% } %>
                     </div>
                 </div>
@@ -622,6 +942,199 @@
                 document.body.classList.add('dark-mode');
             }
             updateThemeIcon(darkMode);
+            
+            // Check all book descriptions for overflow
+            checkDescriptionOverflow();
+        });
+        
+        function checkDescriptionOverflow() {
+            const descriptions = document.querySelectorAll('.book-description');
+            descriptions.forEach(desc => {
+                const btn = desc.nextElementSibling;
+                // Check if content is overflowing (more than 3 lines)
+                if (desc.scrollHeight > desc.clientHeight + 5) {
+                    if (btn && btn.classList.contains('see-more-btn')) {
+                        btn.style.display = 'inline-flex';
+                    }
+                }
+            });
+        }
+        
+        function toggleDescription(button) {
+            const description = button.previousElementSibling;
+            const textSpan = button.querySelector('.see-more-text');
+            const icon = button.querySelector('i');
+            
+            if (description.classList.contains('truncated')) {
+                description.classList.remove('truncated');
+                textSpan.textContent = 'See less';
+                icon.className = 'fa fa-chevron-up';
+            } else {
+                description.classList.add('truncated');
+                textSpan.textContent = 'See more';
+                icon.className = 'fa fa-chevron-down';
+            }
+        }
+        
+        function openEditModal(button) {
+            const bookId = button.getAttribute('data-id');
+            const title = button.getAttribute('data-title');
+            const author = button.getAttribute('data-author');
+            const description = button.getAttribute('data-description');
+            const isbn = button.getAttribute('data-isbn');
+            
+            document.getElementById('edit-title').value = title;
+            document.getElementById('edit-author').value = author;
+            document.getElementById('edit-description').value = description;
+            document.getElementById('edit-isbn').value = isbn;
+            document.getElementById('editBookForm').action = '/books/edit/' + bookId;
+            document.getElementById('editModal').classList.add('show');
+        }
+        
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('show');
+        }
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeEditModal();
+            }
+        });
+        
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('show');
+        }
+        
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeEditModal();
+            }
+        });
+        
+        // Search and Filter Functions
+        function filterBooks() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const sortFilter = document.getElementById('sortFilter').value;
+            const bookCards = Array.from(document.querySelectorAll('.book-card'));
+            
+            let visibleCount = 0;
+            let hiddenCount = 0;
+            
+            // First, filter books
+            bookCards.forEach(card => {
+                const title = card.querySelector('.book-title').textContent.toLowerCase();
+                const author = card.querySelector('.book-author').textContent.toLowerCase();
+                const isbn = card.querySelector('.book-isbn') ? card.querySelector('.book-isbn').textContent.toLowerCase() : '';
+                const description = card.querySelector('.book-description') ? card.querySelector('.book-description').textContent.toLowerCase() : '';
+                
+                const matchesSearch = title.includes(searchInput) || 
+                                    author.includes(searchInput) || 
+                                    isbn.includes(searchInput) || 
+                                    description.includes(searchInput);
+                
+                const statusBadge = card.querySelector('.book-status');
+                const isAvailable = statusBadge.classList.contains('status-available');
+                const matchesStatus = statusFilter === 'all' || 
+                                    (statusFilter === 'available' && isAvailable) ||
+                                    (statusFilter === 'checked-out' && !isAvailable);
+                
+                if (matchesSearch && matchesStatus) {
+                    card.style.display = '';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                    hiddenCount++;
+                }
+            });
+            
+            // Then, sort visible books
+            if (sortFilter !== 'default') {
+                const booksGrid = document.querySelector('.books-grid');
+                const visibleCards = bookCards.filter(card => card.style.display !== 'none');
+                
+                visibleCards.sort((a, b) => {
+                    let aValue, bValue;
+                    
+                    if (sortFilter.startsWith('title')) {
+                        aValue = a.querySelector('.book-title').textContent.toLowerCase();
+                        bValue = b.querySelector('.book-title').textContent.toLowerCase();
+                    } else if (sortFilter.startsWith('author')) {
+                        aValue = a.querySelector('.book-author').textContent.toLowerCase();
+                        bValue = b.querySelector('.book-author').textContent.toLowerCase();
+                    }
+                    
+                    if (sortFilter.endsWith('asc')) {
+                        return aValue.localeCompare(bValue);
+                    } else {
+                        return bValue.localeCompare(aValue);
+                    }
+                });
+                
+                // Re-append sorted cards
+                visibleCards.forEach(card => booksGrid.appendChild(card));
+            }
+            
+            // Update book count
+            updateBookCount(visibleCount, bookCards.length);
+            
+            // Show search results message
+            updateSearchResults(searchInput, statusFilter, visibleCount, hiddenCount);
+        }
+        
+        function updateBookCount(visible, total) {
+            const bookCount = document.getElementById('bookCount');
+            if (visible === total) {
+                bookCount.textContent = `(${total} books)`;
+            } else {
+                bookCount.textContent = `(${visible} of ${total} books)`;
+            }
+        }
+        
+        function updateSearchResults(searchInput, statusFilter, visible, hidden) {
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (searchInput || statusFilter !== 'all') {
+                let message = '';
+                if (visible === 0) {
+                    message = '<i class="fa fa-exclamation-circle"></i> No books found matching your search criteria.';
+                } else if (hidden > 0) {
+                    message = `<i class="fa fa-check-circle"></i> Found ${visible} book${visible !== 1 ? 's' : ''} matching your criteria. ${hidden} book${hidden !== 1 ? 's are' : ' is'} hidden.`;
+                } else {
+                    message = `<i class="fa fa-check-circle"></i> Showing all ${visible} book${visible !== 1 ? 's' : ''}.`;
+                }
+                resultsDiv.innerHTML = message;
+                resultsDiv.style.display = 'block';
+            } else {
+                resultsDiv.style.display = 'none';
+            }
+        }
+        
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = 'all';
+            document.getElementById('sortFilter').value = 'default';
+            filterBooks();
+        }
+        
+        // Initialize book count on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+            }
+            updateThemeIcon(darkMode);
+            
+            // Check all book descriptions for overflow
+            checkDescriptionOverflow();
+            
+            // Initialize book count
+            const totalBooks = document.querySelectorAll('.book-card').length;
+            updateBookCount(totalBooks, totalBooks);
         });
     </script>
 </body>

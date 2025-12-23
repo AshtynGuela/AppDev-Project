@@ -7,7 +7,7 @@
     <title>Sign In - miniLibrary</title>
     
     <!-- Template CSS Files -->
-    <link rel="stylesheet" type="text/css" href="/template-style.css">
+    <link rel="stylesheet" type="text/css" href="/optimized-style.css">
     <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
     
     <!-- Favicon -->
@@ -15,24 +15,32 @@
     
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-            --bg-color: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --bg-color: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
             --card-bg: #fff;
             --text-color: #333;
             --input-bg: #fff;
             --input-border: #e0e0e0;
-            --input-focus: #ff6b6b;
+            --input-focus: #667eea;
             --label-color: #333;
+            --heading-color: #667eea;
+            --link-color: #667eea;
+            --button-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --button-shadow: rgba(102, 126, 234, 0.4);
         }
         
         body.dark-mode {
-            --bg-color: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            --bg-color: linear-gradient(135deg, #1a1a1a 0%, #2d1a0d 100%);
             --card-bg: #2d2d2d;
             --text-color: #e0e0e0;
             --input-bg: #3d3d3d;
             --input-border: #4d4d4d;
             --input-focus: #fbbf24;
             --label-color: #e0e0e0;
+            --heading-color: #fbbf24;
+            --link-color: #fbbf24;
+            --button-gradient: linear-gradient(135deg, #d97706 0%, #ca8a04 100%);
+            --button-shadow: rgba(251, 191, 36, 0.4);
         }
         
         body {
@@ -58,7 +66,7 @@
             margin-bottom: 40px;
         }
         .signin-header h1 {
-            color: #ff6b6b;
+            color: var(--heading-color);
             font-size: 36px;
             margin-bottom: 10px;
         }
@@ -94,7 +102,7 @@
         .btn-signin {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            background: var(--button-gradient);
             color: white;
             border: none;
             border-radius: 8px;
@@ -105,7 +113,7 @@
         }
         .btn-signin:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 5px 20px var(--button-shadow);
         }
         .error-message {
             background: #fee;
@@ -119,10 +127,11 @@
             text-align: center;
             margin-top: 25px;
             padding-top: 25px;
-            border-top: 1px solid #e0e0e0;
+            border-top: 1px solid var(--input-border);
+            color: var(--text-color);
         }
         .signin-footer a {
-            color: #ff6b6b;
+            color: var(--link-color);
             text-decoration: none;
             font-weight: 600;
         }
@@ -167,7 +176,7 @@
     
     <div class="signin-wrapper">
         <div class="signin-header">
-            <h1>📚 miniLibrary</h1>
+            <h1>Library Management System</h1>
             <p>Welcome back! Please sign in to your account</p>
         </div>
         
