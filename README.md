@@ -1,4 +1,8 @@
 Library Management System
+by:
+Aaron Beard
+Ashtyn Sam Guela
+Ken Benavente
 
 A full-featured library management system built with Node.js, Express, MongoDB, and EJS templating. Features a responsive UI taken from [Libraria](https://www.templateshub.net/template/LIBRARIA-Online-Library-Template) with dark mode support and comprehensive book management capabilities.
 
@@ -261,4 +265,5 @@ For issues or questions, please create an issue in the repository.
 ---
 
 **Made using Node.js, Express, and MongoDB**
+
 
